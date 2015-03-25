@@ -80,4 +80,16 @@ dropEvery xs n = snd $ foldl f (n,[]) xs
                        f (k, xs) x = if k <=0  then error "index out of range"
                        	             else (k-1, xs++[x]) 
 
+splitHelper xs ys n
+           | n < 0 = error "Wrong index"
+           | n==0 = (xs, ys)
+           | otherwise = splitHelper (xs ++ [head ys]) (tail ys) (n-1)
 
+split :: [a]-> Int -> ([a], [a])
+split = splitHelper [] 
+
+
+
+slice :: [a] -> Int -> Int -> [a]
+
+slice xs i k = fst (split ((iterate tail xs) !! (i-1)) (k-i+1))
